@@ -1,0 +1,75 @@
+"Use Vim settings, rather then Vi settings (much better!).
+"This must be first, because it changes other options as a side effect.
+set nocompatible
+scriptencoding utf-8
+set fileencoding=utf-8
+set encoding=utf-8
+
+call pathogen#infect()
+
+set history=1000
+
+filetype plugin on
+filetype indent on
+
+set showcmd                    "show incomplete cmds down the bottom
+set showmode                   "show current mode down the bottom
+set backspace=indent,eol,start "allow backspacing over everything in insert mode
+
+syntax on
+set colorcolumn=80
+set tabstop=2
+set number
+set incsearch
+set hlsearch
+set wrap
+set linebreak
+set ignorecase
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set autoindent
+set t_Co=256
+colorscheme solarized
+set background=dark
+
+set statusline+=%#warningmsg#
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags noci
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags noci
+autocmd FileType ruby let g:rubycomplete_classes_in_global=1
+
+"Close HTML TAGS
+iabbrev <// </<C-X><C-O>
+
+"NERDtree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+map <c-f> :call JsBeautify()<cr>
+autocmd FileType javascript noremap <buffer>  <c-f> :call JsBeautify()<cr>
+autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+
+command Log :! tail -f $(rails runner 'puts Rails.root')/log/development.log
+command! Psql :! psql
+
+"Templates
+function Template(name)
+  "execute "r~/.vim/templates/" . a:name
+  execute ":read !template " . a:name
+endfunction
+
+function ListTemplateFiles(ArgLead, CmdLine, CursorPos)
+  return map(split(glob('~/.emstel/templates/*'), "\n"), 'fnamemodify(v:val, ":t")')
+endfunction
+
+command! -nargs=1 -complete=customlist,ListTemplateFiles Template call Template(<f-args>)

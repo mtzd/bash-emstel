@@ -1,0 +1,47 @@
+  before_action :find_<%=variable %>, only: [:show, :update, :destroy]
+  @document_fields = [ :example1, :example2 ]
+
+  def index
+    <%=variable %>s = <%=model %>.all
+    render json: { <%=variable %>s: <%=variable %>s }, status: :ok
+  end
+
+  def show
+    @<%=variable %> =  <%=model %>.find(params[:id])
+    render json: document, status: :ok
+  end
+
+  def create
+    @<%=variable %> =  <%=model %>.new <%=variable %>_params
+    @<%=variable %>.save ? ok : bad_request
+  end
+
+  def update
+    @<%=variable %>.update(<%=variable %>_params) ? ok : bad_request
+  end
+
+  def destroy
+    @<%=variable %>.destroy
+    render json: { message: 'res delete' }, status: :ok
+  end
+
+  private
+
+  def find_<%=variable %>
+    @<%=variable %> = <%=model %>.find(params[:id])
+  end
+
+  def <%=variable %>_params
+    permitted_params = [:example1, :example2]
+    params.require(:<%=variable %>).permit(permitted_params)
+  end
+
+  def document
+    { <%=variable %>: @<%=variable %>.as_json(only: @document_fields) }
+  end
+
+  def document_error
+    { <%=variable %>: @<%=variable %>.as_json(only: @document_fields,
+                                              methods: [:errors]) }
+  end
+

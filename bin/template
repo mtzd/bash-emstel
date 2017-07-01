@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+  echo "Enter filename"
+  exit 1
+fi
+
+erb ${@:2} $HOME/.emstel/templates/$1
+#erb /home/emstel/.emstel/templates/rails_application_controller
+
