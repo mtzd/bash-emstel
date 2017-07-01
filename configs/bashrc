@@ -4,41 +4,12 @@ PS1="\e[48;5;239m\e[38;5;252m\u@\h\e[0m\e[48;5;4m\e[38;5;16m\w\e[0m\e[48;5;220m\
 source ~/.git-prompt
 export PATH=$PATH":$HOME/.emstel/bin"
 
-_ems()
+_server()
 {
   local current=${COMP_WORDS[COMP_CWORD]}
-  local position=$COMP_CWORD
-
-  case "$position" in
-    1)
-      COMPREPLY=( $(compgen -W "server vagrant" -- $current) )
-      ;;
-    2)
-      local previous=${COMP_WORDS[1]}
-      case "$previous" in
-        vagrant)
-          COMPREPLY=( $(compgen -W "up halt provision" -- $current) )
-          ;;
-      esac
-      ;;
-    3)
-      local first=${COMP_WORDS[1]}
-      case "$first" in
-        vagrant)
-          COMPREPLY=( $(compgen -W "$(ls ~/vms/)" -- $current) )
-          ;;
-      esac
-      ;;
-  esac
-}
-
-_ems-dev()
-{
-  local current=${COMP_WORDS[COMP_CWORD]}
-  WORDS="$(ems-dev autocomplete $COMP_WORDS)"
+  WORDS="$(server list)"
   COMPREPLY=( $(compgen -W "$WORDS" -- $current) )
 }
 
-complete -F _ems ems
-complete -F _ems-dev ems-dev
+complete -F _server server
 

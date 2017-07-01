@@ -1,0 +1,21 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+  echo "No Server set"
+  exit 1
+fi
+
+case "$1" in
+  list)
+    echo "prod.blah prod.blubba test.blub"
+    exit 0;
+    ;;
+  prod.blah)
+    echo "Do something"
+    exit 0;
+    ;;
+  *)
+    echo "Not found"
+    exit 1
+esac
+
