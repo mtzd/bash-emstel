@@ -1,5 +1,8 @@
 
-PS1="\e[48;5;239m\e[38;5;252m\u@\h\e[0m\e[48;5;4m\e[38;5;16m\w\e[0m\e[48;5;220m\e[38;5;8m \$(__git_ps1 "%s") \e[0m "
+#PS1="\e[48;5;239m\e[38;5;252m\u@\h\e[0m\e[48;5;4m\e[38;5;16m\w\e[0m\e[48;5;220m\e[38;5;8m \$(__git_ps1 "%s") \e[0m "
+#export PS1="\[\033[48;5;7m\]\u@\h\[$(tput sgr0)\]\[\033[48;5;45m\]\W\[$(tput sgr0)\]\[\033[48;5;11m\] \[$(tput sgr0)\]"
+
+export PS1="\[\033[38;5;3m\]\[\033[48;5;236m\]\u@\h \[$(tput sgr0)\]\[\033[38;5;0m\]\[\033[48;5;33m\]\W\[$(tput sgr0)\]\[\033[48;5;226m\] \$(__git_ps1 "%s") \[$(tput sgr0)\]"
 
 source ~/.git-prompt
 export PATH=$PATH":$HOME/.emstel/bin"
