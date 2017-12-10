@@ -1,0 +1,19 @@
+{
+  "development": [
+    { "name":"rails-generator", 
+      "path": "~/test-projects/generator-rails/",
+      "command": "rails server -b 0.0.0.0" },
+    { "name":"ng-generator", 
+      "path": "~/test-projects/generator-angular/",
+      "command": "npm start" }
+  ],
+  "servers": [
+    { "name": "test.example1",
+      "ip": "123.123.123.123",
+      "command": "ssh example@example1" },
+    { "name": "test.example2",
+      "ip": "123.123.123.444",
+      "command": "ssh blub@example2" }
+  ]
+
+}

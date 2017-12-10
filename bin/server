@@ -1,21 +1,42 @@
 #!/bin/bash
-
-if [ $# -eq 0 ]; then
-  echo "No Server set"
-  exit 1
-fi
+JSON=$( cat ~/.emstel/data/servers.json )
 
 case "$1" in
   list)
-    echo "prod.blah prod.blubba test.blub"
+    for row in $(echo "${JSON}" | jq -r '.servers[] | @base64'); do
+      _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+      }
+    
+      echo -e $(_jq '.name') "\t" $(_jq '.ip') "\t" $(_jq '.command')
+    done
     exit 0;
     ;;
-  prod.blah)
-    echo "Do something"
+  show)
+    list=""
+    for row in $(echo "${JSON}" | jq -r '.servers[] | @base64'); do
+      _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+      }
+      list="$list $(_jq '.name')"
+    done
+    echo $list
     exit 0;
     ;;
   *)
-    echo "Not found"
-    exit 1
+    for row in $(echo "${JSON}" | jq -r '.servers[] | @base64'); do
+      _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+      }
+   
+      if [ $1 = $(_jq '.name') ]; then
+        eval $($(_jq '.command'))
+        exit 0;
+      fi
+
+      echo "server not found"
+      exit 1;
+    done
+    exit 0;
 esac
 

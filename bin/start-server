@@ -1,0 +1,50 @@
+#!/bin/bash
+JSON=$( cat ~/.emstel/data/servers.json )
+
+case "$1" in
+  list)
+    for row in $(echo "${JSON}" | jq -r '.development[] | @base64'); do
+      _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+      }
+    
+      echo -e $(_jq '.name') "\t" $(_jq '.path') "\t" $(_jq '.command')
+    done
+    exit 0;
+    ;;
+  show)
+    list=""
+    for row in $(echo "${JSON}" | jq -r '.development[] | @base64'); do
+      _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+      }
+      list="$list $(_jq '.name')"
+    done
+    echo $list
+    exit 0;
+    ;;
+  all)
+    for row in $(echo "${JSON}" | jq -r '.development[] | @base64'); do
+      _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+      }
+
+      cmd="tmux new -d -s $(_jq '.name') 'cd  $(_jq '.path') ;$(_jq '.command')'"
+      echo $cmd
+      eval $cmd
+    done
+    exit 0;
+    ;;
+  *)
+    for row in $(echo "${JSON}" | jq -r '.development[] | @base64'); do
+      _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+      }
+#tmux new -s blubba 'cd ~/test-projects/generator-rails; rails server'   
+      if [ $1 = $(_jq '.name') ]; then
+        cmd="tmux new -d -s $(_jq '.name') 'cd  $(_jq '.path') ;$(_jq '.command')'"
+        eval $cmd
+      fi
+    done
+esac
+

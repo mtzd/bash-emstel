@@ -1,0 +1,22 @@
+#!/bin/bash
+if [ $# -eq 0 ]; then
+  echo "usage: emux session"
+  exit 1
+fi
+
+SEARCH="$1:" 
+
+if [ "$(tmux ls | grep -c $SEARCH)" -eq 1 ]; then
+  tmux attach -t $1
+else
+
+  read -p "Session not found, create a new one? [y/n] (Default: yes)" yn
+  
+  case $yn in
+    [Nn]* ) tmux ls;;
+    * ) tmux new -s $1;;
+  esac
+fi
+
+
+

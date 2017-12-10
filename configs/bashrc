@@ -10,9 +10,25 @@ export PATH=$PATH":$HOME/.emstel/bin"
 _server()
 {
   local current=${COMP_WORDS[COMP_CWORD]}
-  WORDS="$(server list)"
+  WORDS="$(server show)"
   COMPREPLY=( $(compgen -W "$WORDS" -- $current) )
 }
 
+_startserver()
+{
+  local current=${COMP_WORDS[COMP_CWORD]}
+  WORDS="$(start-server show)"
+  COMPREPLY=( $(compgen -W "$WORDS" -- $current) )
+}
+
+_emux()
+{
+  local current=${COMP_WORDS[COMP_CWORD]}
+  WORDS="$(tmux ls -F '#{session_name}')"
+  COMPREPLY=( $(compgen -W "$WORDS" -- $current) ) 
+}
+
 complete -F _server server
+complete -F _emux emux
+complete -F _startserver start-server
 

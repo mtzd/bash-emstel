@@ -28,9 +28,11 @@ fi
 
 mkdir -p ~/.emstel
 mkdir -p ~/.emstel/bin
+mkdir -p ~/.emstel/data
 mkdir -p ~/.emstel/templates
 
 \cp templates/* ~/.emstel/templates/
+\cp -n data/* ~/.emstel/data/
 
 \cp bin/* ~/.emstel/bin/
 chmod 755 ~/.emstel/bin/*
