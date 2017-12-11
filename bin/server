@@ -30,12 +30,9 @@ case "$1" in
       }
    
       if [ $1 = $(_jq '.name') ]; then
-        eval $($(_jq '.command'))
+        eval $(_jq '.command')
         exit 0;
       fi
-
-      echo "server not found"
-      exit 1;
     done
     exit 0;
 esac
